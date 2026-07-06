@@ -4,7 +4,7 @@ double square(double length);
 double cube(double length);
 
 int main() {
-    double length = 6.0;
+    double length = 5;
     
     // Storing the returned values from our functions into local variables
     double area = square(length);

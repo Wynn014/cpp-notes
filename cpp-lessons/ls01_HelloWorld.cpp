@@ -2,8 +2,8 @@
 
 int main() {
 
-    std::cout << "Hello World!" << std::endl;
-    std::cout << "I like pizza!" << '\n';
+    std::cout << "Hello World!\n\n";
+    std::cout << "I like pizza!\n\n";
     
     return 0;
 }
