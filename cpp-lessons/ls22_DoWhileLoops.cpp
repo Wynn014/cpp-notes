@@ -1,8 +1,8 @@
 #include <iostream>
 
 int main(){
-    
-   int num;
+    int num;
+
    do{
         std::cout << "enter  number: ";
         std::cin >> num;
@@ -10,5 +10,5 @@ int main(){
     
     std::cout << "Th num is: " << num << '\n';
 
-    return 0;
+    return;
  }
