@@ -1,7 +1,7 @@
 #include <iostream>
 int main()
 {
-    std::cout << "Welcome to the System, Wynn!\n";
+    std::cout << "Welcome to the System!\n";
 
     std::cout << "click enter to start: ";
     std::string start1;
