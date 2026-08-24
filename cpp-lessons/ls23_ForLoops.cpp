@@ -1,12 +1,27 @@
-#include <iostream>
-#include <chrono>
-#include <thread>
+#include <iostream> 
+int main (){
 
-int main()
- {
-   for(int i = 1; i <= 10; i += 1){
-     std::cout << i << '\n';
-   }
-   std::cout << "OMSIM HAPPY NEW YEAR NA\n";
-    return 0;
+  std::string CorrectUsername = "Admin";
+  std::string CorrectPassword = "Wyn";
+  std::string password, username; 
+
+  int attempts; 
+  for (attempts = 1; attempts <=3; attempts++ ){
+    std::cout << "Attempts: " << attempts << '\n';
+
+  std::cout << "please enter your username: ";
+  std::cin >> username;
+
+  std::cout << "please enter your password: ";
+  std::cin >> password;
+
+  if (username == CorrectUsername && password == CorrectPassword)
+  {
+    std::cout << "Welcome User! \n";
+  }
+  }
+  if (attempts >=3){
+    std::cout << "invalid user" << std::endl;
+  }
+  return 0;
 }
