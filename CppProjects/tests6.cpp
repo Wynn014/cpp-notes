@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MAX = 10; // 10 slots, extra space is for the new products we add later
+const int MAX = 10; // 10 slots, extra space is for the new products we might add later
 
 // Function prototypes based on syllabus (Void, Returning, Call by Value, Call by Reference)
 void displayMenu();
@@ -21,42 +21,55 @@ int main() {
     string password;
     int attempts = 0;
     string role = "";
+    int userType;
 
-    // Login loop (max 3 tries)
-    while (attempts < 3) {
-        std::cout << "Enter username: ";
-        std::cin >> username;
-        std::cout << "Enter password: ";
-        std::cin >> password;
-
-        if (username == "Group1Owner" && password == "OwnerPass") {
-            role = "Owner";
-            std::cout << "\nLogin successful! Logged in as OWNER." << std::endl << "\n";
-            break;
-        } else if(username == "Group1InventoryManager" && password == "InventoryPass") {
-            role = "InventoryManager";
-            std::cout << "\nLogin successful! Logged in as INVENTORY MANAGER." << std::endl << "\n";
-            break;
-        } else if (username == "Group1Cashier" && password == "CashierPass") {
-            role = "Cashier";
-            std::cout << "\nLogin successful! Logged in as CASHIER." << std::endl << "\n";
-            break;
-        } else if (username == "Group1Customer" && password == "CustomerPass") {
-            role = "Customer";
-            std::cout << "\nLogin successful! Logged in as CUSTOMER." << std::endl << "\n";
-            break;
-        } else {
-            attempts++;
-            std::cout << "Wrong username or password!\n";
-            std::cout << "Attempts left: " << (3 - attempts) << std::endl << std::endl;
+    // ask first if staff or customer before going into the login part
+    do {
+        std::cout << "Are you a (1) Staff/Owner or (2) Customer? ";
+        std::cin >> userType;
+        if (userType != 1 && userType != 2) {
+            std::cout << "Invalid input, enter 1 or 2 only.\n";
         }
+    } while (userType != 1 && userType != 2);
+
+    if (userType == 1) {
+        // Login loop (max 3 tries)
+        while (attempts < 3) {
+            std::cout << "Enter username: ";
+            std::cin >> username;
+            std::cout << "Enter password: ";
+            std::cin >> password;
+
+            if (username == "Group1Owner" && password == "OwnerPass") {
+                role = "Owner";
+                std::cout << "\nLogin successful! Logged in as OWNER." << std::endl << "\n";
+                break;
+            } else if(username == "Group1InventoryManager" && password == "InventoryPass") {
+                role = "InventoryManager";
+                std::cout << "\nLogin successful! Logged in as INVENTORY MANAGER." << std::endl << "\n";
+                break;
+            } else if (username == "Group1Cashier" && password == "CashierPass") {
+                role = "Cashier";
+                std::cout << "\nLogin successful! Logged in as CASHIER." << std::endl << "\n";
+                break;
+            } else {
+                attempts++;
+                std::cout << "Wrong username or password!\n";
+                std::cout << "Attempts left: " << (3 - attempts) << std::endl << std::endl;
+            }
+        }
+
+        // no role means all 3 tries were used up, so stop here instead of letting them in
+        if (role == "") {
+            std::cout << "3 failed attempts. System locked, please run the program again.\n";
+            return 0;
+        }
+    } else {
+        // customer walks in straight, no username/password needed
+        role = "Customer";
+        std::cout << "\nWelcome, Customer! You may now view products and checkout.\n\n";
     }
 
-    // no role means all 3 tries were used up, so stop here instead of letting them in
-    if (role == "") {
-        std::cout << "3 failed attempts. System locked, please run the program again.\n";
-        return 0;
-    }
 
     // 1D array for item names
     string names[MAX] = {"Mech Keyboard", "Gaming Mouse", "1TB SSD"};

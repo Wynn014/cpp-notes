@@ -4,7 +4,7 @@ int main() {
     std::string name;
     double age;
 
-    std::cout << "what is your full name";
+    std::cout << "what is your full name: ";
     std::getline(std::cin, name);
 
     std::cout << "What is your age?: ";

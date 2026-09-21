@@ -7,56 +7,108 @@ const int MAX = 10; // 10 slots, extra space is for the new products we add late
 
 // Function prototypes based on syllabus (Void, Returning, Call by Value, Call by Reference)
 void displayMenu();
-void displayInventory(const int ids[], const string names[], const double inventory[][2], int size);
-void addProduct(int ids[], string names[], double inventory[][2], int &count);
-void processSale(int ids[], string names[], double inventory[][2], int size, int &transCount, double &revCount);
-void restockProduct(int ids[], string names[], double inventory[][2], int size);
-void dailyReport(string names[], double inventory[][2], int size, int transCount, double revCount);
-int findIndex(int ids[], int size, int searchId); // Returning function, -1 if the ID is not on the list
-double computeSubtotal(double price, int qty); // Returning function
-void deductStock(double &stockQty, int qty);    // Call by reference
+
+void displayInventory(
+    const int ids[],
+    const string names[],
+    const double inventory[][2],
+    int size
+);
+
+void addProduct(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int &count
+);
+
+void processSale(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int size,
+    int &transCount,
+    double &revCount
+);
+
+void restockProduct(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int size
+);
+
+void dailyReport(
+    string names[],
+    double inventory[][2],
+    int size,
+    int transCount,
+    double revCount
+);
+
+// Returning function, -1 if the ID is not on the list
+int findIndex(int ids[], int size, int searchId);
+
+// Returning function
+double computeSubtotal(double price, int qty);
+
+// Call by reference
+void deductStock(double &stockQty, int qty);
 
 int main() {
     string username;
     string password;
     int attempts = 0;
     string role = "";
+    int userType;
 
-    // Login loop (max 3 tries)
-    while (attempts < 3) {
-        std::cout << "Enter username: ";
-        std::cin >> username;
-        std::cout << "Enter password: ";
-        std::cin >> password;
-
-        if (username == "Group1Owner" && password == "OwnerPass") {
-            role = "Owner";
-            std::cout << "\nLogin successful! Logged in as OWNER." << std::endl << "\n";
-            break;
-        } else if(username == "Group1InventoryManager" && password == "InventoryPass") {
-            role = "InventoryManager";
-            std::cout << "\nLogin successful! Logged in as INVENTORY MANAGER." << std::endl << "\n";
-            break;
-        } else if (username == "Group1Cashier" && password == "CashierPass") {
-            role = "Cashier";
-            std::cout << "\nLogin successful! Logged in as CASHIER." << std::endl << "\n";
-            break;
-        } else if (username == "Group1Customer" && password == "CustomerPass") {
-            role = "Customer";
-            std::cout << "\nLogin successful! Logged in as CUSTOMER." << std::endl << "\n";
-            break;
-        } else {
-            attempts++;
-            std::cout << "Wrong username or password!\n";
-            std::cout << "Attempts left: " << (3 - attempts) << std::endl << std::endl;
+    // ask first if staff or customer before going into the login part
+    do {
+        std::cout << "Are you a (1) Staff/Owner or (2) Customer? ";
+        std::cin >> userType;
+        if (userType != 1 && userType != 2) {
+            std::cout << "Invalid input, enter 1 or 2 only.\n";
         }
+    } while (userType != 1 && userType != 2);
+
+    if (userType == 1) {
+        // Login loop (max 3 tries)
+        while (attempts < 3) {
+            std::cout << "Enter username: ";
+            std::cin >> username;
+            std::cout << "Enter password: ";
+            std::cin >> password;
+
+            if (username == "Group1Owner" && password == "OwnerPass") {
+                role = "Owner";
+                std::cout << "\nLogin successful! Logged in as OWNER." << std::endl << "\n";
+                break;
+            } else if(username == "Group1InventoryManager" && password == "InventoryPass") {
+                role = "InventoryManager";
+                std::cout << "\nLogin successful! Logged in as INVENTORY MANAGER." << std::endl << "\n";
+                break;
+            } else if (username == "Group1Cashier" && password == "CashierPass") {
+                role = "Cashier";
+                std::cout << "\nLogin successful! Logged in as CASHIER." << std::endl << "\n";
+                break;
+            } else {
+                attempts++;
+                std::cout << "Wrong username or password!\n";
+                std::cout << "Attempts left: " << (3 - attempts) << std::endl << std::endl;
+            }
+        }
+
+        // no role means all 3 tries were used up, so stop here instead of letting them in
+        if (role == "") {
+            std::cout << "3 failed attempts. System locked, please run the program again.\n";
+            return 0;
+        }
+    } else {
+        // customer walks in straight, no username/password needed
+        role = "Customer";
+        std::cout << "\nWelcome, Customer! You may now view products and checkout.\n\n";
     }
 
-    // no role means all 3 tries were used up, so stop here instead of letting them in
-    if (role == "") {
-        std::cout << "3 failed attempts. System locked, please run the program again.\n";
-        return 0;
-    }
 
     // 1D array for item names
     string names[MAX] = {"Mech Keyboard", "Gaming Mouse", "1TB SSD"};
@@ -155,7 +207,12 @@ void displayMenu() {
 }
 
 // Void function using call by value for arrays
-void displayInventory(const int ids[], const string names[], const double inventory[][2], int size) {
+void displayInventory(
+    const int ids[],
+    const string names[],
+    const double inventory[][2],
+    int size
+) {
     std::cout << "\n--- CURRENT INVENTORY ---\n";
     std::cout << "ID\tITEM NAME\t\tPRICE\tSTOCK\tSTATUS" << std::endl;
 
@@ -193,7 +250,12 @@ int findIndex(int ids[], int size, int searchId) {
 }
 
 // puts the new product on the last empty slot of the arrays
-void addProduct(int ids[], string names[], double inventory[][2], int &count) {
+void addProduct(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int &count
+) {
     if (count >= MAX) {
         std::cout << "Product list is already full (max " << MAX << " items).\n";
         return;
@@ -234,7 +296,14 @@ void addProduct(int ids[], string names[], double inventory[][2], int &count) {
 }
 
 // Function handling transaction with call by reference for tallies
-void processSale(int ids[], string names[], double inventory[][2], int size, int &transCount, double &revCount) {
+void processSale(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int size,
+    int &transCount,
+    double &revCount
+) {
     displayInventory(ids, names, inventory, size);
 
     int itemId, qty;
@@ -305,7 +374,12 @@ void processSale(int ids[], string names[], double inventory[][2], int size, int
     }
 }
 
-void restockProduct(int ids[], string names[], double inventory[][2], int size) {
+void restockProduct(
+    int ids[],
+    string names[],
+    double inventory[][2],
+    int size
+) {
     displayInventory(ids, names, inventory, size);
 
     int itemId, add;
@@ -330,7 +404,13 @@ void restockProduct(int ids[], string names[], double inventory[][2], int size) 
 }
 
 // this used to be inside case 4, moved it out so it matches the other functions
-void dailyReport(string names[], double inventory[][2], int size, int transCount, double revCount) {
+void dailyReport(
+    string names[],
+    double inventory[][2],
+    int size,
+    int transCount,
+    double revCount
+) {
     std::cout << "\n--- DAILY REPORT ---\n";
     std::cout << "Total Transactions: " << transCount << std::endl;
     std::cout << "Total Revenue: P" << revCount << "\n";
